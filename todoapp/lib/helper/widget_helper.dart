@@ -9,11 +9,8 @@ class AppWidgetHelper {
         backgroundColor: Colors.transparent,
         builder: (context) {
           return Container(
-              margin: EdgeInsets.fromLTRB(
-                  20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(top: 20),
               decoration: const BoxDecoration(
-                  // color: helperBoxColor(theme),
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: child);
         });

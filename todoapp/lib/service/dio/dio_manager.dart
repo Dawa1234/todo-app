@@ -2,18 +2,18 @@ import 'package:dio/dio.dart';
 import 'package:todoapp/service/dio/dio_interceptor.dart';
 import 'package:todoapp/service/server_config.dart';
 
-class ApiManager {
+class DioManager {
   static late final ServerConfig _serverConfig;
   Dio? dio;
 
   /// To initialize server config
   ///
-  /// [LiveServerConfig] , [TestServerConfig] and [PrePodServerConfig]
+  /// [LiveServerConfig] , [TestServerConfig] or [PrePodServerConfig]
   static void init(ServerConfig serverConfig) {
     _serverConfig = serverConfig;
   }
 
-  ApiManager() {
+  DioManager() {
     BaseOptions options = BaseOptions(
         baseUrl: _serverConfig.url,
         connectTimeout: Duration(milliseconds: _serverConfig.connectionTimeOut),
