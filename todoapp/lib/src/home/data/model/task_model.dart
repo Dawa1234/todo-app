@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 import 'package:todoapp/helper/enums.dart';
 
 class TaskModel extends Equatable {
@@ -41,7 +40,7 @@ class TaskModel extends Equatable {
         title: json["title"],
         description: json["description"],
         createdAt: json["createdAt"] != null
-            ? DateFormat("dd-MM-yyyy HH:mm").parse(json["createdAt"])
+            ? DateTime.parse(json["createdAt"])
             : DateTime.now(),
         isCompleted: json["isCompleted"],
         isActive: json["isActive"],

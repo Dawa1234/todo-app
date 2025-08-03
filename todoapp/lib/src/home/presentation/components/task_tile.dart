@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/config/default_size.dart';
 import 'package:todoapp/helper/enums.dart';
+import 'package:todoapp/helper/extensions.dart';
 import 'package:todoapp/src/home/data/model/task_model.dart';
 
 class TaskTile extends StatelessWidget {
@@ -22,31 +23,33 @@ class TaskTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        margin: const EdgeInsets.symmetric(vertical: kPaddingSmall),
+        margin: EdgeInsets.zero,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: GestureDetector(
-          // await showMenu(
-          //     context: context,
-          //     position: RelativeRect.fromLTRB(
-          //         details.globalPosition.dx,
-          //         details.globalPosition.dy,
-          //         details.globalPosition.dx,
-          //         details.globalPosition.dy),
-          //     items: [
-          //       PopupMenuItem(
-          //         child: const Text("Edit"),
-          //         onTap: () {
-          //           onEdit?.call(task);
-          //         },
-          //       ),
-          //       PopupMenuItem(
-          //         onTap: () {
-          //           onDelete?.call(task);
-          //         },
-          //         child: const Text("Delete"),
-          //       ),
-          //     ]);
+          onLongPressStart: (details) async {
+            await showMenu(
+                context: context,
+                position: RelativeRect.fromLTRB(
+                    details.globalPosition.dx,
+                    details.globalPosition.dy,
+                    details.globalPosition.dx,
+                    details.globalPosition.dy),
+                items: [
+                  PopupMenuItem(
+                    child: const Text("Edit"),
+                    onTap: () {
+                      onEdit?.call(task);
+                    },
+                  ),
+                  PopupMenuItem(
+                    onTap: () {
+                      onDelete?.call(task);
+                    },
+                    child: const Text("Delete"),
+                  ),
+                ]);
+          },
           child: ListTile(
               onTap: onTap,
               contentPadding:
@@ -60,7 +63,12 @@ class TaskTile extends StatelessWidget {
               title: Text(task.title),
               subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text(task.description)]),
+                  children: [
+                    InkWell(
+                        onTap: () {},
+                        child: Text("${task.createdAt?.formateDate()}")),
+                    Text(task.description)
+                  ]),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

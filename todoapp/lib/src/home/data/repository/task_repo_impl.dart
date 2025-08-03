@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:developer';
 
 import 'package:todoapp/core/service_locator.dart';
 import 'package:todoapp/data/hive/hive_init.dart';
@@ -18,8 +18,8 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<TaskModel> addTask({required TaskModel taskModel}) async {
     try {
-      final responseData =
-          taskModel.copyWith(id: const Uuid().v4(), createdAt: DateTime.now());
+      final id = const Uuid().v4();
+      final responseData = taskModel.copyWith(id: id, title: id);
       final taskList = <Map<String, dynamic>>[];
 
       // act as a post api for now
@@ -59,61 +59,168 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<TaskModel> editTask({required TaskModel taskModel}) async {
-    /// act as a post api for now
-    await HiveCache.save(EndPoints.addTask, jsonEncode(taskModel.toJson()));
-    final response = await HiveCache.get(EndPoints.addTask);
-    // final response = await DioApiBase.apiBase(
-    //     path: EndPoints.addTask,
-    //     method: _dio.options.method,
-    //     apiCall:
-    //         _dio.post(EndPoints.addTask, data: {"data": taskModel.toJson()}));
+  Future<TaskModel> editTask(
+      {required int index, required TaskModel taskModel}) async {
+    try {
+      final responseData = <Map<String, dynamic>>[];
+      // act as a post api for now
+      final cacheData = await HiveCache.get(EndPoints.fetchAllTask);
 
-    if (response is ErrorModel) throw (response as ErrorModel).message;
+      // update cache
+      final taskListModel = TaskListModel.fromJson(cacheData ?? {'data': []});
+      taskListModel.taskList.removeAt(index);
+      taskListModel.taskList.insert(index, taskModel);
+      responseData.addAll(taskListModel.toJsonList());
 
-    return taskModel;
+      // object to cache
+      final Map<String, dynamic> data = {"data": responseData};
+
+      await HiveCache.save(EndPoints.fetchAllTask, data);
+
+      // API CALL
+      // final response = await DioApiBase.apiBase(
+      //     path: EndPoints.addTask,
+      //     method: RequestMethod.PUT,
+      //     apiCall:
+      //         _dio.put(EndPoints.addTask, data: {"data": taskModel.toJson()}));
+
+      final response = taskModel;
+
+      if (response is ErrorModel) throw (response as ErrorModel).message;
+
+      return response;
+    } catch (_) {
+      throw _.toString();
+    }
   }
 
   @override
-  Future<void> deleteTask({required String id}) {
-    // TODO: implement deleteTask
-    throw UnimplementedError();
+  Future<void> deleteTask({required String id}) async {
+    try {
+      final responseData = <Map<String, dynamic>>[];
+      // act as a post api for now
+      final cacheData = await HiveCache.get(EndPoints.fetchAllTask);
+      final taskListModel = TaskListModel.fromJson(cacheData ?? {'data': []});
+
+      // logic
+      log("Received $id");
+      final index = taskListModel.taskList.indexWhere((task) => task.id == id);
+      taskListModel.taskList.removeAt(index);
+
+      responseData.addAll(taskListModel.toJsonList());
+
+      // object to cache
+      final Map<String, dynamic> data = {"data": responseData};
+
+      await HiveCache.save(EndPoints.fetchAllTask, data);
+
+      // API CALL
+      // final response = await DioApiBase.apiBase(
+      //     path: EndPoints.addTask,
+      //     method: RequestMethod.PUT,
+      //     apiCall:
+      //         _dio.put(EndPoints.addTask, data: {"data": taskModel.toJson()}));
+    } catch (_) {
+      throw _.toString();
+    }
   }
 
   @override
   Future<List<TaskModel>> fetchAllTask() async {
-    /// act as a post api for now
-    // await HiveCache.save(EndPoints.addTask, jsonEncode(taskModel.toJson()));
-    // final response = await HiveCache.get(EndPoints.addTask);
-    final response = await DioApiBase.apiBase(
-        path: EndPoints.fetchAllTask,
-        method: RequestMethod.GET,
-        apiCall: _dio.get(EndPoints.fetchAllTask));
+    try {
+      /// act as a post api for now
+      // await HiveCache.save(EndPoints.addTask, jsonEncode(taskModel.toJson()));
+      // final response = await HiveCache.get(EndPoints.addTask);
+      final response = await DioApiBase.apiBase(
+          path: EndPoints.fetchAllTask,
+          method: RequestMethod.GET,
+          apiCall: _dio.get(EndPoints.fetchAllTask));
 
-    response.runtimeType;
+      if (response is ErrorModel) throw response.message;
 
-    if (response is ErrorModel) throw response.message;
-
-    final responseData = TaskListModel.fromJson(response);
-
-    return responseData.taskList;
+      final responseData = TaskListModel.fromJson(response ?? {"data": []});
+      return responseData.taskList;
+    } catch (_) {
+      throw _.toString();
+    }
   }
 
   @override
-  Future<TaskModel> fetchTaskDetail({required String id}) {
-    // TODO: implement fetchTask
+  Future<TaskModel> fetchTaskDetail({required String id}) async {
+    try {
+      /// act as a post api for now
+      final response = await DioApiBase.apiBase(
+          path: EndPoints.fetchTaskDetail,
+          method: RequestMethod.GET,
+          apiCall: _dio.get(EndPoints.fetchTaskDetail));
+
+      if (response is ErrorModel) throw response.message;
+
+      final responseData = TaskListModel.fromJson(response);
+
+      final taskModel =
+          responseData.taskList.firstWhere((task) => task.id == id);
+
+      return taskModel;
+    } catch (_) {
+      throw _.toString();
+    }
+  }
+
+  // filter/sort task
+  @override
+  Future<List<TaskModel>> filterTask(
+      {bool? sortTime,
+      String? fromDate,
+      String? toDate,
+      bool? isCompleted,
+      bool? isActive}) async {
+    try {
+      // act as a post api for now
+      final cacheData = await HiveCache.get(EndPoints.fetchAllTask);
+      final taskListModel = TaskListModel.fromJson(cacheData ?? {'data': []});
+
+      // Filter logic
+      final filteredTask = taskListModel.taskList.where((task) {
+        final matchCompleted =
+            isCompleted == null ? true : task.isCompleted == isCompleted;
+
+        final matchActive = isActive == null ? true : task.isActive == isActive;
+
+        return matchCompleted && matchActive;
+      }).toList();
+      if (sortTime ?? false) {
+        filteredTask.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      }
+
+      return filteredTask;
+    } catch (_) {
+      throw _.toString();
+    }
+  }
+
+  @override
+  Future<void> deleteTaskInBulk({required List<String> ids}) async {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> deleteTaskInBulk({required List<String> ids}) {
-    // TODO: implement deleteTaskInBulk
-    throw UnimplementedError();
-  }
+  Future<void> deleteAllTask() async {
+    try {
+      // API CALL
+      // final response = await DioApiBase.apiBase(
+      //     path: EndPoints.deleteAllTask,
+      //     method: RequestMethod.POST,
+      //     apiCall: _dio.post(EndPoints.fetchTaskDetail));
 
-  @override
-  Future<void> deleteAllTask() {
-    // TODO: implement deleteAllTask
-    throw UnimplementedError();
+      final response = <String, dynamic>{};
+
+      // act as a post api for now
+      await HiveCache.delete(EndPoints.fetchAllTask);
+
+      if (response is ErrorModel) throw (response as ErrorModel).message;
+    } catch (_) {
+      throw _.toString();
+    }
   }
 }

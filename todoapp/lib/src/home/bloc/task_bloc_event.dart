@@ -14,9 +14,10 @@ class AddTask extends TaskBlocEvent {
 
 // edit task
 class EditTask extends TaskBlocEvent {
+  final int index;
   final TaskModel taskModel;
 
-  const EditTask({required this.taskModel});
+  const EditTask({required this.index, required this.taskModel});
 }
 
 // delete task
@@ -35,6 +36,21 @@ class FetchAllTask extends TaskBlocEvent {
 class FetchTaskDetail extends TaskBlocEvent {
   final String id;
   const FetchTaskDetail({required this.id});
+}
+
+// filter task
+class FilterTask extends TaskBlocEvent {
+  final bool? sortDate;
+  final String? fromDateTime;
+  final String? toDateTime;
+  final bool? isCompleted;
+  final bool? isActive;
+  const FilterTask(
+      {this.sortDate,
+      this.fromDateTime,
+      this.toDateTime,
+      this.isCompleted,
+      this.isActive});
 }
 
 // delete task in bulk

@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -19,6 +20,7 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
     on<DeleteTask>(_deleteTask);
     on<FetchAllTask>(_fetchAllTask);
     on<FetchTaskDetail>(_fetchTaskDetail);
+    on<FilterTask>(_filterTask);
     on<DeleteTaskInBulk>(_deleteTaskInBulk);
     on<DeleteAllTask>(_deleteAllTask);
   }
@@ -40,10 +42,10 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
   Future<void> _editTask(EditTask event, Emitter emit) async {
     emit(TaskUpdating());
     try {
-      final newTask =
-          await _taskRepositoryImpl.editTask(taskModel: event.taskModel);
+      final newTask = await _taskRepositoryImpl.editTask(
+          index: event.index, taskModel: event.taskModel);
 
-      await Future.delayed(const Duration(seconds: 2));
+      // await Future.delayed(const Duration(seconds: 2));
       emit(TaskUpdated(
           taskUpdateStatus: TaskUpdateStatus.edited, newTask: newTask));
     } catch (e) {
@@ -54,9 +56,11 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
   Future<void> _deleteTask(DeleteTask event, Emitter emit) async {
     emit(TaskUpdating());
     try {
-      final taskList = await _taskRepositoryImpl.fetchAllTask();
+      log("EveNT iD ${event.id}");
+      await _taskRepositoryImpl.deleteTask(id: event.id);
 
-      emit(TaskListFetched(taskList: taskList));
+      emit(const TaskUpdated(
+          taskUpdateStatus: TaskUpdateStatus.deleted, newTask: TaskModel()));
     } catch (e) {
       emit(TaskUpdateError(e.toString()));
     }
@@ -66,6 +70,7 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
   Future<void> _fetchAllTask(FetchAllTask event, Emitter emit) async {
     emit(TaskFetching());
     try {
+      // await Future.delayed(const Duration(seconds: 2));
       final taskList = await _taskRepositoryImpl.fetchAllTask();
 
       emit(TaskListFetched(taskList: taskList));
@@ -82,6 +87,22 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
       emit(TaskListFetched(taskList: taskList));
     } catch (e) {
       emit(TaskFetchError(e.toString()));
+    }
+  }
+
+  Future<void> _filterTask(FilterTask event, Emitter emit) async {
+    emit(TaskUpdating());
+    try {
+      final taskList = await _taskRepositoryImpl.filterTask(
+          isActive: event.isActive,
+          isCompleted: event.isCompleted,
+          sortTime: event.sortDate,
+          fromDate: event.fromDateTime,
+          toDate: event.toDateTime);
+
+      emit(TaskListFiltered(taskList: taskList));
+    } catch (e) {
+      emit(TaskUpdateError(e.toString()));
     }
   }
 

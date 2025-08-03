@@ -1,7 +1,7 @@
 // Request Method
 // ignore_for_file: constant_identifier_names
 
-enum RequestMethod { GET, POST, OUT, DELETE }
+enum RequestMethod { GET, POST, PUT, DELETE }
 
 // Task priority
 enum TaskPriority { high, medium, low }

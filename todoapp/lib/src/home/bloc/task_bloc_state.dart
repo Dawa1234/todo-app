@@ -25,6 +25,13 @@ final class TaskListFetched extends TaskBlocState {
   const TaskListFetched({required this.taskList});
 }
 
+// fetch list
+final class TaskListFiltered extends TaskBlocState {
+  final List<TaskModel> taskList;
+
+  const TaskListFiltered({required this.taskList});
+}
+
 // update a task
 final class TaskUpdated extends TaskBlocState {
   final TaskUpdateStatus taskUpdateStatus;

@@ -4,26 +4,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todoapp/config/default_size.dart';
 import 'package:todoapp/helper/enums.dart';
-import 'package:todoapp/helper/loading_indicator.dart';
 import 'package:todoapp/helper/sized_box.dart';
 import 'package:todoapp/src/home/bloc/task_bloc.dart';
 import 'package:todoapp/src/home/data/model/task_model.dart';
 import 'package:todoapp/src/home/presentation/components/date_picker.dart';
-import 'package:uuid/uuid.dart';
 
 // Object as an argument
 class TaskDetailArgs {
+  final int index;
   final bool isNewTask;
   final TaskModel? taskModel;
 
-  const TaskDetailArgs({this.isNewTask = true, this.taskModel});
+  const TaskDetailArgs({this.index = 0, this.isNewTask = true, this.taskModel});
 }
 
 class TaskDetail extends StatefulWidget {
+  final int index;
   final bool isNewTask;
   final TaskModel? taskModel;
   const TaskDetail({
     super.key,
+    this.index = 0,
     this.isNewTask = true,
     this.taskModel,
   });
@@ -40,7 +41,9 @@ class TaskDetail extends StatefulWidget {
 
           return CupertinoPage(
               child: TaskDetail(
-                  isNewTask: args.isNewTask, taskModel: args.taskModel));
+                  index: args.index,
+                  isNewTask: args.isNewTask,
+                  taskModel: args.taskModel));
         });
   }
 
@@ -97,9 +100,8 @@ class _TaskDetailState extends State<TaskDetail> {
         body: BlocListener<TaskBloc, TaskBlocState>(
             bloc: taskBloc,
             listener: (context, state) {
-              if (state is TaskUpdating) LoadingIndicator.showProgress(context);
+              // if (state is TaskUpdating) LoadingIndicator.showProgress(context);
               if (state is TaskUpdated) {
-                context.pop();
                 context.pop("123");
               }
             },
@@ -138,11 +140,10 @@ class _TaskDetailState extends State<TaskDetail> {
                   DropdownButtonFormField<TaskPriority>(
                       value: _selectedPriority,
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
-                        labelText: 'Priority',
-                        border: const OutlineInputBorder(),
-                      ),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                          labelText: 'Priority',
+                          border: const OutlineInputBorder()),
                       items: priorities.map((priority) {
                         final label = (priority['value'] as TaskPriority).name;
                         return DropdownMenuItem<TaskPriority>(
@@ -170,6 +171,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
                   sizedBoxhgth10,
 
+                  // Active
                   CheckboxListTile(
                       tileColor: Colors.grey.shade200,
                       controlAffinity: ListTileControlAffinity.leading,
@@ -181,6 +183,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
                   sizedBoxhgth10,
 
+                  // Completed
                   CheckboxListTile(
                       tileColor: Colors.grey.shade200,
                       controlAffinity: ListTileControlAffinity.leading,
@@ -203,14 +206,13 @@ class _TaskDetailState extends State<TaskDetail> {
                   const Spacer(),
 
                   SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(),
-                        onPressed: _handleForm,
-                        child: widget.isNewTask
-                            ? const Text("Add Task")
-                            : const Text("Edit Task")),
-                  )
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(),
+                          onPressed: _handleForm,
+                          child: widget.isNewTask
+                              ? const Text("Add Task")
+                              : const Text("Edit Task")))
                 ]))));
   }
 
@@ -218,7 +220,6 @@ class _TaskDetailState extends State<TaskDetail> {
     final TaskModel newTask;
     if (widget.isNewTask) {
       newTask = TaskModel(
-          id: const Uuid().v4(),
           title: _titleController.text,
           description: _descriptionController.text,
           createdAt: _dateTime,
@@ -236,30 +237,6 @@ class _TaskDetailState extends State<TaskDetail> {
         isActive: _isActive,
         isCompleted: _isCompleted,
         priority: _selectedPriority);
-    taskBloc.add(EditTask(taskModel: newTask));
+    taskBloc.add(EditTask(index: widget.index, taskModel: newTask));
   }
 }
-
-final List<TaskModel> taskList = [
-  const TaskModel(
-    title: 'Pay for utility services',
-    description: 'Home',
-    priority: TaskPriority.medium,
-  ),
-  const TaskModel(
-    title: 'Buy groceries for mac & cheese',
-    description: 'Food',
-    priority: TaskPriority.low,
-  ),
-  const TaskModel(
-    title: 'Practice Piano',
-    description: 'Music',
-    priority: TaskPriority.high,
-  ),
-  const TaskModel(
-    title: 'Call Jonathan',
-    description: 'Home',
-    priority: TaskPriority.high,
-    isCompleted: true,
-  ),
-];
