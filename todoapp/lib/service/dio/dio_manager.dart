@@ -4,7 +4,7 @@ import 'package:todoapp/service/server_config.dart';
 
 class DioManager {
   static late final ServerConfig _serverConfig;
-  Dio? dio;
+  late Dio dio;
 
   /// To initialize server config
   ///
@@ -26,6 +26,6 @@ class DioManager {
 
     dio = Dio(options);
 
-    dio!.interceptors.addAll({DioInterceptor(dioInstance: dio!)});
+    dio.interceptors.addAll({DioInterceptor(dioInstance: dio)});
   }
 }

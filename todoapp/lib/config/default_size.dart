@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Button Color
-const kPrimaryColor = Color.fromRGBO(255, 221, 0, 1);
+const kPrimaryColor = Colors.blueAccent;
 const kfullButtonTextColor = Color.fromRGBO(0, 35, 53, 1);
 
 const kExtraCashColor = Color.fromRGBO(0, 111, 172, 1);

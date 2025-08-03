@@ -7,7 +7,7 @@ abstract class ServerConfig {
 
 class TestServerConfig implements ServerConfig {
   @override
-  final String url = "";
+  final String url = "https://cat-fact.herokuapp.com";
 
   @override
   final int connectionTimeOut = 1200;

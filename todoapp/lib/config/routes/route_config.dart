@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todoapp/helper/error_screen.dart';
+import 'package:todoapp/src/home/presentation/task_detail.dart';
 import 'package:todoapp/src/home/presentation/view_task_list.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -10,6 +11,9 @@ class AppRouter {
       navigatorKey: navigatorKey,
       debugLogDiagnostics: true,
       initialLocation: ViewTaskList.routeName,
-      routes: [ViewTaskList.route()],
+      routes: [
+        ViewTaskList.route(),
+        TaskDetail.route(),
+      ],
       errorBuilder: (context, state) => const ErrorScreen());
 }

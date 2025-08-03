@@ -5,11 +5,11 @@ sealed class TaskBlocState {
   const TaskBlocState();
 }
 
-// initial
-final class TaskBlocInitial extends TaskBlocState {}
+// initial fetch
+final class TaskFetching extends TaskBlocState {}
 
-// loading
-final class TaskLoading extends TaskBlocState {}
+// when changes made in task
+final class TaskUpdating extends TaskBlocState {}
 
 // fetch detail
 final class TaskDetailFetched extends TaskBlocState {
@@ -27,14 +27,22 @@ final class TaskListFetched extends TaskBlocState {
 
 // update a task
 final class TaskUpdated extends TaskBlocState {
-  final TaskUpdated task;
+  final TaskUpdateStatus taskUpdateStatus;
+  final TaskModel newTask;
 
-  const TaskUpdated({required this.task});
+  const TaskUpdated({required this.taskUpdateStatus, required this.newTask});
 }
 
 // error/failure
-final class TaskUpdateFailed extends TaskBlocState {
+final class TaskFetchError extends TaskBlocState {
   final String errorMessage;
 
-  const TaskUpdateFailed(this.errorMessage);
+  const TaskFetchError(this.errorMessage);
+}
+
+// error/failure
+final class TaskUpdateError extends TaskBlocState {
+  final String errorMessage;
+
+  const TaskUpdateError(this.errorMessage);
 }
