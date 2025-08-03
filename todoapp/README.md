@@ -47,7 +47,6 @@ Follow these steps to run the app:
 
 
 ## 📁 Folder Structure
-    ```bash
     lib/
     ├── config/              # Theme, constants, default sizes
     ├── helper/              # Utilities, extensions, shared widgets
@@ -58,5 +57,21 @@ Follow these steps to run the app:
     │       └── presentation/ # UI layer
     └── main.dart
 
+## 📦 Dependencies used
+
+    flutter_bloc: ^9.1.1
+    firebase_core: ^4.0.0
+    shared_preferences: ^2.5.3
+    hive: ^2.2.3
+    drift: ^2.28.1
+    go_router: ^15.1.2
+    dio: ^5.8.0+1
+    flutter_secure_storage: ^9.2.4
+    connectivity_plus: ^6.1.4
+    path_provider: ^2.1.5
+    get_it: ^8.1.0
+    uuid: ^4.5.1
+    equatable: ^2.0.7
+    intl: ^0.20.2
 
 
