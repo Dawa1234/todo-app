@@ -45,7 +45,6 @@ Follow these steps to run the app:
     ```bash
     flutter run
 
-
 ## 📁 Folder Structure
     lib/
     ├── config/              # Theme, constants, default sizes
@@ -73,5 +72,17 @@ Follow these steps to run the app:
     uuid: ^4.5.1
     equatable: ^2.0.7
     intl: ^0.20.2
+
+## 🧪 Testing
+    This project supports unit and bloc testing using:
+
+    flutter_test
+    bloc_test
+    mocktail
+
+    To run tests:
+    
+    ```bash
+    flutter test
 
 
