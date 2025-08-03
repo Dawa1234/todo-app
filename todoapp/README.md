@@ -32,4 +32,31 @@ Follow these steps to run the app:
 1. **Clone the repository**:
    ```bash
    git clone <your_repo_url>
-   cd todo_app
+   
+2.  **Switch Flutter version (recommended)**:
+    ```bash
+    flutter version 3.24.0
+
+3.  **Get Dependencies**:
+    ```bash
+    flutter pub get
+
+4.  **Run the app**:
+    ```bash
+    flutter run
+
+
+## 📁 Folder Structure
+    ```bash
+    lib/
+    ├── config/              # Theme, constants, default sizes
+    ├── helper/              # Utilities, extensions, shared widgets
+    ├── src/
+    │   └── home/
+    │       ├── data/        # Hive models, repository implementation
+    │       ├── bloc/        # BLoC logic, events, states
+    │       └── presentation/ # UI layer
+    └── main.dart
+
+
+
