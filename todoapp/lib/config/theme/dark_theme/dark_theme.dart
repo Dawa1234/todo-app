@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/config/default_size.dart';
 
-const Color primaryColorDark = Color.fromRGBO(0, 18, 34, 1);
+const Color kPrimaryColorDark = Color.fromRGBO(0, 18, 34, 1);
 const Color successColorDark = Color.fromRGBO(165, 213, 160, 1);
 // Container Color
 const boxColorDark = Color.fromRGBO(0, 35, 53, 1);
@@ -45,7 +45,7 @@ class DarkTheme {
             visualDensity: VisualDensity.compact, splashRadius: 5),
         appBarTheme: const AppBarTheme(
             toolbarHeight: 40,
-            centerTitle: false,
+            centerTitle: true,
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             shadowColor: Colors.transparent,
@@ -54,13 +54,13 @@ class DarkTheme {
             color: Colors.transparent,
             iconTheme: IconThemeData(color: Colors.white),
             actionsIconTheme: IconThemeData(color: Colors.white)),
-        dividerTheme: const DividerThemeData(color: primaryColorDark),
+        dividerTheme: const DividerThemeData(color: kPrimaryColorDark),
         progressIndicatorTheme:
-            const ProgressIndicatorThemeData(color: primaryColorDark),
+            const ProgressIndicatorThemeData(color: kPrimaryColorDark),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         inputDecorationTheme: inputDecoration,
-        scaffoldBackgroundColor: primaryColorDark,
+        scaffoldBackgroundColor: kPrimaryColorDark,
         dropdownMenuTheme: const DropdownMenuThemeData(
             textStyle: TextStyle(fontSize: kfontSizeRegular)),
         listTileTheme: const ListTileThemeData(

@@ -4,8 +4,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/config/routes/route_config.dart';
+import 'package:todoapp/config/theme/cubit/theme_cubit.dart';
 import 'package:todoapp/config/theme/dark_theme/dark_theme.dart';
-import 'package:todoapp/config/theme/light_theme/light_theme.dart';
+import 'package:todoapp/config/theme/get_theme.dart';
 import 'package:todoapp/core/service_locator.dart';
 import 'package:todoapp/core/shared_preferences.dart';
 import 'package:todoapp/data/hive/hive_init.dart';
@@ -31,19 +32,21 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final router = AppRouter.router;
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => TaskBloc()),
-      ],
-      child: MaterialApp.router(
-          title: 'Todo App',
-          theme: LightTheme.themeData(),
-          // theme: getCustomThemeData(themeMode: themeMode),
-          darkTheme: DarkTheme.themeData(),
-          themeMode: ThemeMode.system,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
-          routerDelegate: router.routerDelegate),
-    );
+        providers: [
+          BlocProvider(create: (context) => TaskBloc()),
+          BlocProvider(create: (context) => ThemeCubit()..init()),
+        ],
+        child: BlocBuilder<ThemeCubit, ThemeMode>(builder: (context, state) {
+          final themeMode = getTheme(state, context);
+          return MaterialApp.router(
+              title: 'Todo App',
+              theme: getCustomThemeData(themeMode: themeMode),
+              darkTheme: DarkTheme.themeData(),
+              themeMode: state,
+              routeInformationParser: router.routeInformationParser,
+              routeInformationProvider: router.routeInformationProvider,
+              routerDelegate: router.routerDelegate);
+        }));
   }
 }
 

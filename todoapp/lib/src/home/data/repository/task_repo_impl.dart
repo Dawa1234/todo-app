@@ -170,11 +170,7 @@ class TaskRepositoryImpl implements TaskRepository {
   // filter/sort task
   @override
   Future<List<TaskModel>> filterTask(
-      {bool? sortTime,
-      String? fromDate,
-      String? toDate,
-      bool? isCompleted,
-      bool? isActive}) async {
+      {required FilterTaskModel filterTaskModel}) async {
     try {
       // act as a post api for now
       final cacheData = await HiveCache.get(EndPoints.fetchAllTask);
@@ -182,14 +178,28 @@ class TaskRepositoryImpl implements TaskRepository {
 
       // Filter logic
       final filteredTask = taskListModel.taskList.where((task) {
-        final matchCompleted =
-            isCompleted == null ? true : task.isCompleted == isCompleted;
+        // filter completed
+        final completed = filterTaskModel.isCompleted == null
+            ? true
+            : task.isCompleted == filterTaskModel.isCompleted;
 
-        final matchActive = isActive == null ? true : task.isActive == isActive;
+        // filter active
+        final active = filterTaskModel.isActive == null
+            ? true
+            : task.isActive == filterTaskModel.isActive;
 
-        return matchCompleted && matchActive;
+        // filter date range
+        final date = (filterTaskModel.fromDateTime == null ||
+                filterTaskModel.toDateTime == null)
+            ? true
+            : !task.createdAt!.isBefore(filterTaskModel.fromDateTime!) &&
+                !task.createdAt!.isAfter(filterTaskModel.toDateTime!);
+
+        return completed && active && date;
       }).toList();
-      if (sortTime ?? false) {
+
+      // sort by date (ascending)
+      if (filterTaskModel.sortDate ?? false) {
         filteredTask.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
       }
 

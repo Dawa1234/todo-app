@@ -40,17 +40,8 @@ class FetchTaskDetail extends TaskBlocEvent {
 
 // filter task
 class FilterTask extends TaskBlocEvent {
-  final bool? sortDate;
-  final String? fromDateTime;
-  final String? toDateTime;
-  final bool? isCompleted;
-  final bool? isActive;
-  const FilterTask(
-      {this.sortDate,
-      this.fromDateTime,
-      this.toDateTime,
-      this.isCompleted,
-      this.isActive});
+  final FilterTaskModel filterTaskModel;
+  const FilterTask({required this.filterTaskModel});
 }
 
 // delete task in bulk

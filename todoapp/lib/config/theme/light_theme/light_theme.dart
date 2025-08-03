@@ -56,7 +56,7 @@ class LightTheme {
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness: Brightness.dark),
             toolbarHeight: 40,
-            centerTitle: false,
+            centerTitle: true,
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             shadowColor: Colors.transparent,

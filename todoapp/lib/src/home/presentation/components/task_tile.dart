@@ -7,15 +7,13 @@ import 'package:todoapp/src/home/data/model/task_model.dart';
 
 class TaskTile extends StatelessWidget {
   final TaskModel task;
-  final void Function(bool?)? onListReorder;
   final void Function()? onTap;
-  final void Function(TaskModel taskModel)? onDelete;
-  final void Function(TaskModel taskModel)? onEdit;
+  final void Function()? onDelete;
+  final void Function()? onEdit;
   const TaskTile({
     super.key,
     required this.task,
     this.onTap,
-    required this.onListReorder,
     required this.onDelete,
     required this.onEdit,
   });
@@ -27,29 +25,7 @@ class TaskTile extends StatelessWidget {
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: GestureDetector(
-          onLongPressStart: (details) async {
-            await showMenu(
-                context: context,
-                position: RelativeRect.fromLTRB(
-                    details.globalPosition.dx,
-                    details.globalPosition.dy,
-                    details.globalPosition.dx,
-                    details.globalPosition.dy),
-                items: [
-                  PopupMenuItem(
-                    child: const Text("Edit"),
-                    onTap: () {
-                      onEdit?.call(task);
-                    },
-                  ),
-                  PopupMenuItem(
-                    onTap: () {
-                      onDelete?.call(task);
-                    },
-                    child: const Text("Delete"),
-                  ),
-                ]);
-          },
+          onLongPressStart: (details) async => menu(context, details),
           child: ListTile(
               onTap: onTap,
               contentPadding:
@@ -64,9 +40,7 @@ class TaskTile extends StatelessWidget {
               subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                        onTap: () {},
-                        child: Text("${task.createdAt?.formateDate()}")),
+                    Text("${task.createdAt?.formateDate()}"),
                     Text(task.description)
                   ]),
               trailing: Row(
@@ -81,6 +55,20 @@ class TaskTile extends StatelessWidget {
                 ],
               )),
         ));
+  }
+
+  Future menu(BuildContext context, LongPressStartDetails details) async {
+    await showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(
+            details.globalPosition.dx,
+            details.globalPosition.dy,
+            details.globalPosition.dx,
+            details.globalPosition.dy),
+        items: [
+          PopupMenuItem(onTap: onEdit, child: const Text("Edit")),
+          PopupMenuItem(onTap: onDelete, child: const Text("Delete"))
+        ]);
   }
 
   Color _getPriorityColor(TaskPriority priority) {

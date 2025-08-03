@@ -106,3 +106,18 @@ class TaskListModel {
     );
   }
 }
+
+class FilterTaskModel {
+  bool? sortDate;
+  DateTime? fromDateTime;
+  DateTime? toDateTime;
+  bool? isCompleted;
+  bool? isActive;
+
+  FilterTaskModel(
+      {this.sortDate,
+      this.fromDateTime,
+      this.toDateTime,
+      this.isActive,
+      this.isCompleted});
+}

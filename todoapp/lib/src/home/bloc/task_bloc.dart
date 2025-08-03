@@ -94,11 +94,7 @@ class TaskBloc extends Bloc<TaskBlocEvent, TaskBlocState> {
     emit(TaskUpdating());
     try {
       final taskList = await _taskRepositoryImpl.filterTask(
-          isActive: event.isActive,
-          isCompleted: event.isCompleted,
-          sortTime: event.sortDate,
-          fromDate: event.fromDateTime,
-          toDate: event.toDateTime);
+          filterTaskModel: event.filterTaskModel);
 
       emit(TaskListFiltered(taskList: taskList));
     } catch (e) {

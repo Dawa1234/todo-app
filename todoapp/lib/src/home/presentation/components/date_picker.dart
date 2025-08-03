@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class DatePickerField extends StatefulWidget {
   final DateTime? selectedDate;
+  final bool isViewOnly;
   final void Function(DateTime?) onDateSelected;
 
   const DatePickerField(
-      {super.key, this.selectedDate, required this.onDateSelected});
+      {super.key,
+      this.selectedDate,
+      this.isViewOnly = false,
+      required this.onDateSelected});
 
   @override
   State<DatePickerField> createState() => _DatePickerFieldState();
@@ -52,7 +56,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
     return TextFormField(
       controller: _controller,
       readOnly: true,
-      onTap: _pickDate,
+      onTap: widget.isViewOnly ? null : _pickDate,
       decoration: const InputDecoration(
           labelText: 'Select Date',
           suffixIcon: Icon(Icons.calendar_today, size: 20),
