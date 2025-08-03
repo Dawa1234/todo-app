@@ -80,9 +80,8 @@ Follow these steps to run the app:
     bloc_test
     mocktail
 
-    To run tests:
-    
-    ```bash
+## To run tests:
+
     flutter test
 
 
