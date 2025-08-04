@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:todoapp/data/flutter_secure_storage.dart';
 
@@ -29,9 +30,14 @@ class HiveCache {
   }
 
   static Future<void> init() async {
-    final appDocumentDir =
-        await path_provider.getApplicationDocumentsDirectory();
-    Hive.init(appDocumentDir.path);
+    if (kIsWeb) {
+      Hive.init("/");
+    } else {
+      final appDocumentDir =
+          await path_provider.getApplicationDocumentsDirectory();
+      Hive.init(appDocumentDir.path);
+    }
+
     await _initEncryptedHiveBox();
   }
 

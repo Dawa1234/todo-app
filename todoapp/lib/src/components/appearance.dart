@@ -15,8 +15,9 @@ class Appearance extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeMode>(
         bloc: themeCubit,
         builder: (context, state) {
+          final theme = getTheme(state, context);
           return Container(
-              color: helperBoxColor(state),
+              color: helperBoxColor(theme),
               padding: const EdgeInsets.all(kPaddingRegular),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 const Text("Select Theme"),

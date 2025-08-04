@@ -182,8 +182,9 @@ class _HomePageState extends State<Home> {
         child: BlocBuilder<ThemeCubit, ThemeMode>(
       builder: (context, state) {
         return StatefulBuilder(builder: (context, myState) {
+          final theme = getTheme(state, context);
           return Container(
-              color: helperBoxColor(state),
+              color: helperBoxColor(theme),
               padding: const EdgeInsets.all(kPaddingRegular),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Row(
@@ -266,8 +267,9 @@ class _HomePageState extends State<Home> {
         child: BlocBuilder<ThemeCubit, ThemeMode>(
       builder: (context, state) {
         return StatefulBuilder(builder: (context, myState) {
+          final theme = getTheme(state, context);
           return Container(
-              color: helperBoxColor(state),
+              color: helperBoxColor(theme),
               padding: const EdgeInsets.all(kPaddingRegular),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 // active

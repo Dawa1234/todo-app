@@ -107,6 +107,7 @@ class _TaskDetailState extends State<TaskDetail> {
                     : const Text("Edit Task")),
         body: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
+            final theme = getTheme(themeMode, context);
             return BlocListener<TaskBloc, TaskBlocState>(
                 bloc: taskBloc,
                 listener: (context, state) {
@@ -129,7 +130,7 @@ class _TaskDetailState extends State<TaskDetail> {
                               return null;
                             },
                             decoration: InputDecoration(
-                                fillColor: helperBoxColor(themeMode),
+                                fillColor: helperBoxColor(theme),
                                 filled: true,
                                 suffixIcon: widget.isViewOnly
                                     ? null
@@ -156,7 +157,7 @@ class _TaskDetailState extends State<TaskDetail> {
                             maxLines: 4,
                             maxLength: 100,
                             decoration: InputDecoration(
-                                fillColor: helperBoxColor(themeMode),
+                                fillColor: helperBoxColor(theme),
                                 filled: true,
                                 contentPadding:
                                     const EdgeInsets.all(kPaddingSmall),
@@ -169,7 +170,7 @@ class _TaskDetailState extends State<TaskDetail> {
                             decoration: InputDecoration(
                                 enabled: !widget.isViewOnly,
                                 filled: true,
-                                fillColor: helperBoxColor(themeMode),
+                                fillColor: helperBoxColor(theme),
                                 labelText: 'Priority',
                                 border: const OutlineInputBorder()),
                             items: priorities.map((priority) {
@@ -205,7 +206,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
                         // option
                         _checkBoxTile(
-                            themeMode: themeMode,
+                            themeMode: theme,
                             title: "Active",
                             value: _isActive,
                             onChanged: (value) {
@@ -216,7 +217,7 @@ class _TaskDetailState extends State<TaskDetail> {
 
                         // option
                         _checkBoxTile(
-                            themeMode: themeMode,
+                            themeMode: theme,
                             value: _isCompleted,
                             title: "Completed",
                             onChanged: (value) {

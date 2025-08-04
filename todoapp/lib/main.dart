@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp.router(
               title: 'Todo App',
               theme: getCustomThemeData(themeMode: themeMode),
+              debugShowCheckedModeBanner: false,
               darkTheme: DarkTheme.themeData(),
               themeMode: state,
               routeInformationParser: router.routeInformationParser,

@@ -50,7 +50,9 @@ class BlackTheme {
             surfaceTintColor: Colors.transparent,
             shadowColor: Colors.transparent,
             titleTextStyle: TextStyle(
-                fontSize: kfontSizeLarge, fontWeight: FontWeight.w600),
+                color: Colors.white,
+                fontSize: kfontSizeLarge,
+                fontWeight: FontWeight.w600),
             color: Colors.transparent,
             iconTheme: IconThemeData(color: Colors.white),
             actionsIconTheme: IconThemeData(color: Colors.white)),
@@ -65,9 +67,13 @@ class BlackTheme {
             textStyle: TextStyle(fontSize: kfontSizeRegular)),
         listTileTheme: const ListTileThemeData(
             titleTextStyle: TextStyle(
-                fontSize: kfontSizeRegular, fontWeight: FontWeight.w600),
+                color: Colors.white,
+                fontSize: kfontSizeRegular,
+                fontWeight: FontWeight.w600),
             subtitleTextStyle: TextStyle(
-                fontSize: kfontSizeSmall, fontWeight: FontWeight.w500)),
+                color: Colors.white,
+                fontSize: kfontSizeSmall,
+                fontWeight: FontWeight.w500)),
         expansionTileTheme: ExpansionTileThemeData(
             shape: BeveledRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -76,13 +82,16 @@ class BlackTheme {
             elevation: 10,
             selectedLabelStyle: TextStyle(fontSize: kfontSizeRegular)),
         textTheme: const TextTheme(
-            bodyLarge: TextStyle(fontSize: kfontSizeLarge),
-            bodyMedium: TextStyle(fontSize: kfontSizeRegular),
+            bodyLarge: TextStyle(color: Colors.white, fontSize: kfontSizeLarge),
+            bodyMedium:
+                TextStyle(color: Colors.white, fontSize: kfontSizeRegular),
             bodySmall: TextStyle(
-                fontSize: kfontSizeSmall, fontWeight: FontWeight.w500),
-            titleLarge: TextStyle(
-                fontSize: kfontSizeLarge, fontWeight: FontWeight.w600),
-            titleMedium: TextStyle(fontSize: kfontSizeRegular)));
+                fontSize: kfontSizeSmall,
+                color: Colors.white,
+                fontWeight: FontWeight.w500),
+            titleLarge:
+                TextStyle(fontSize: kfontSizeLarge, color: Colors.white, fontWeight: FontWeight.w600),
+            titleMedium: TextStyle(color: Colors.white, fontSize: kfontSizeRegular)));
   }
 
   static get border => const OutlineInputBorder(
