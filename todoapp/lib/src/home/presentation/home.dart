@@ -371,8 +371,8 @@ class _HomePageState extends State<Home> {
   void _clearDateFilter() {
     _filterOptions.removeWhere((option) {
       return option ==
-              filterTaskModel.fromDateTime!.formateDate(prefix: "From:") ||
-          option == filterTaskModel.toDateTime!.formateDate(prefix: "To:");
+              filterTaskModel.fromDateTime?.formateDate(prefix: "From:") ||
+          option == filterTaskModel.toDateTime?.formateDate(prefix: "To:");
     });
   }
 }

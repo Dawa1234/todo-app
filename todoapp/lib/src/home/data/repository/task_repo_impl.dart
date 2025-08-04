@@ -19,7 +19,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<TaskModel> addTask({required TaskModel taskModel}) async {
     try {
       final id = const Uuid().v4();
-      final responseData = taskModel.copyWith(id: id, title: id);
+      final responseData = taskModel.copyWith(id: id);
       final taskList = <Map<String, dynamic>>[];
 
       // act as a post api for now
