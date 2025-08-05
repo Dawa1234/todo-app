@@ -136,7 +136,8 @@ class DioApiBase {
   /// Only fetch response of [GET] method
   static Future<dynamic> _fetchLocalData(String path) async {
     final data = await HiveCache.get(path);
-    data.runtimeType;
+    // data.runtimeType;
+
     return data;
   }
 

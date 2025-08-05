@@ -363,9 +363,6 @@ class _HomePageState extends State<Home> {
       case TaskUpdateStatus.deletedInBulk:
         // taskList.removeRange();
         break;
-
-      default:
-        break;
     }
   }
 

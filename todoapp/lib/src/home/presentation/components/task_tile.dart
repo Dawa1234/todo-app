@@ -81,9 +81,6 @@ class TaskTile extends StatelessWidget {
 
       case TaskPriority.low:
         return Colors.blue;
-
-      default:
-        return Colors.black;
     }
   }
 }

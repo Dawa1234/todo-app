@@ -125,8 +125,9 @@ class _TaskDetailState extends State<TaskDetail> {
                             readOnly: widget.isViewOnly,
                             controller: _titleController,
                             validator: (value) {
-                              if (value == null || value.isEmpty)
+                              if (value == null || value.isEmpty) {
                                 return "*Required*";
+                              }
                               return null;
                             },
                             decoration: InputDecoration(
@@ -150,8 +151,9 @@ class _TaskDetailState extends State<TaskDetail> {
                             readOnly: widget.isViewOnly,
                             controller: _descriptionController,
                             validator: (value) {
-                              if (value == null || value.isEmpty)
+                              if (value == null || value.isEmpty) {
                                 return "*Required*";
+                              }
                               return null;
                             },
                             maxLines: 4,
@@ -290,6 +292,7 @@ class _TaskDetailState extends State<TaskDetail> {
             isActive: _isActive,
             isCompleted: _isCompleted,
             priority: _selectedPriority);
+
         taskBloc.add(AddTask(taskModel: newTask));
         return;
       }
@@ -301,6 +304,7 @@ class _TaskDetailState extends State<TaskDetail> {
           isActive: _isActive,
           isCompleted: _isCompleted,
           priority: _selectedPriority);
+
       taskBloc.add(EditTask(index: widget.index, taskModel: newTask));
     }
   }

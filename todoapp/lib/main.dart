@@ -39,14 +39,13 @@ class _MyAppState extends State<MyApp> {
         child: BlocBuilder<ThemeCubit, ThemeMode>(builder: (context, state) {
           final themeMode = getTheme(state, context);
           return MaterialApp.router(
-              title: 'Todo App',
-              theme: getCustomThemeData(themeMode: themeMode),
-              debugShowCheckedModeBanner: false,
-              darkTheme: DarkTheme.themeData(),
-              themeMode: state,
-              routeInformationParser: router.routeInformationParser,
-              routeInformationProvider: router.routeInformationProvider,
-              routerDelegate: router.routerDelegate);
+            title: 'Todo App',
+            theme: getCustomThemeData(themeMode: themeMode),
+            debugShowCheckedModeBanner: false,
+            darkTheme: DarkTheme.themeData(),
+            themeMode: state,
+            routerConfig: router,
+          );
         }));
   }
 }
